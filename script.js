@@ -265,7 +265,7 @@ const overlayContent = document.getElementById("overlay-content");
 function openNavMovie(movie) {
   let id = movie.id;
 
-  // fetch movie video details from API
+  // fetch movie video details from api
   fetch(BASE_URL + "/movie/" + id + "/videos?" + API_KEY)
     .then((res) => res.json())
     .then((videoData) => {
@@ -276,14 +276,13 @@ function openNavMovie(movie) {
           var embed = [];
           var dots = [];
           videoData.results.forEach((video, idx) => {
-            let { name , site } = video;
+            let { name , key, site } = video;
             // if its youtube then take embed code from it for perticular movies
             if (site == "YouTube") {
               embed.push(`
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           
           `);
-
               dots.push(`
               <span class="dot">${idx + 1}</span>
             `);
@@ -405,18 +404,19 @@ next.addEventListener("click", () => {
  }
 });
 
-//to move page to next and previous pages
+// to move page to next and previous pages
+// 
 function pageCall(page) {
   let urlSplit = lastUrl.split("?");
   let queryParams = urlSplit[1].split("&");
-  let key = queryParams[queryParams.length].split("=");
+  let key = queryParams[queryParams.length - 1].split("=");
   if (key[0] != "page") {
     let url = lastUrl + "&page=" + page;
     getMovies(url);
  } else {
     key[1] = page.toString();
     let a = key.join("=");
-    queryParams[queryParams.length] = a;
+    queryParams[queryParams.length -1] = a;
     let b = queryParams.join("&");
     let url = urlSplit[0] + "?" + b;
     getMovies(url);
