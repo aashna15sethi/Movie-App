@@ -265,7 +265,7 @@ const overlayContent = document.getElementById("overlay-content");
 function openNavMovie(movie) {
   let id = movie.id;
 
-  // fetch movie video details from API
+  // fetch movie video details from api
   fetch(BASE_URL + "/movie/" + id + "/videos?" + API_KEY)
     .then((res) => res.json())
     .then((videoData) => {
