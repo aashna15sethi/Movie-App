@@ -276,14 +276,13 @@ function openNavMovie(movie) {
           var embed = [];
           var dots = [];
           videoData.results.forEach((video, idx) => {
-            let { name , site } = video;
+            let { name , key, site } = video;
             // if its youtube then take embed code from it for perticular movies
             if (site == "YouTube") {
               embed.push(`
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           
           `);
-
               dots.push(`
               <span class="dot">${idx + 1}</span>
             `);
