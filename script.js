@@ -146,11 +146,32 @@ function highlightSelection() {
   tags.forEach((tag) => {
     tag.classList.remove("highlight");
   });
+  clearBtn();
   if (selectedGenre.length != 0) {
     selectedGenre.forEach((id) => {
       const hightlightedTag = document.getElementById(id);
       hightlightedTag.classList.add("highlight");
     });
+  }
+}
+
+// clear button to clear all the selected genre of movies
+function clearBtn() {
+  let clearBtn = document.getElementById("clear");
+  if (clearBtn) {
+    clearBtn.classList.add("highlight");
+  } else {
+    let clear = document.createElement("div");
+    clear.classList.add("tag", "highlight");
+    clear.id = "clear";
+    clear.innerText = "Clear x";
+    clear.addEventListener("click", () => {
+      selectedGenre = [];
+      //reset selected genre of movies
+      setGenre();
+      getMovies(API_URL);
+    });
+    tagsEl.append(clear);
   }
 }
 
@@ -402,5 +423,36 @@ function pageCall(page) {
   }
 }
 
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("sidebarr").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("sidebarr").style.marginLeft = "0";
+}
+
+//movies which are coming soon
+const comingSoon = document.getElementById('comingSoon')
+comingSoon.addEventListener('click', () => {
+  var url = BASE_URL+`/movie/upcoming?${API_KEY}&language=en-US`
+  getMovies(url)
+
+})
+
+//movies which are top rated
+const topRated = document.getElementById('topRated')
+topRated.addEventListener('click', () => {
+  var url = BASE_URL+`/movie/top_rated?${API_KEY}&language=en-US`
+  getMovies(url)
+})
+
+//movies which are now playing
+const nowPlaying = document.getElementById('nowPlaying')
+nowPlaying.addEventListener('click', () => {
+  var url = BASE_URL+`/movie/now_playing?${API_KEY}&language=en-US`
+  getMovies(url)
+})
 
 
