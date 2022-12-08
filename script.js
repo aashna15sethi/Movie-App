@@ -423,5 +423,36 @@ function pageCall(page) {
   }
 }
 
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("sidebarr").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("sidebarr").style.marginLeft = "0";
+}
+
+//movies which are coming soon
+const comingSoon = document.getElementById('comingSoon')
+comingSoon.addEventListener('click', () => {
+  var url = BASE_URL+`/movie/upcoming?${API_KEY}&language=en-US`
+  getMovies(url)
+
+})
+
+//movies which are top rated
+const topRated = document.getElementById('topRated')
+topRated.addEventListener('click', () => {
+  var url = BASE_URL+`/movie/top_rated?${API_KEY}&language=en-US`
+  getMovies(url)
+})
+
+//movies which are now playing
+const nowPlaying = document.getElementById('nowPlaying')
+nowPlaying.addEventListener('click', () => {
+  var url = BASE_URL+`/movie/now_playing?${API_KEY}&language=en-US`
+  getMovies(url)
+})
 
 
