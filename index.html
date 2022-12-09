@@ -9,21 +9,24 @@
   </head>
   <body>
     <header>
-      <!--search button-->
+      <!--button to search for movies -->
       <form id="formId">
         <input type="text" placeholder="Search" id="search" class="search" />
       </form>
     </header>
     <div id="tags"></div>
     <div id="nav" class="overlay">
-      <!-- Button to close the overlay navigation -->
+      <!-- Button to close the overlay (movie trailer) navigation page -->
       <a href="javascript:void(0)" class="closebtn" onclick="closeNavMovie()"
         >&times;</a
       >
 
-      <!-- Overlay content -->
+      <!-- This is the page to display the movie trailers 
+        for the selected movies -->
       <div class="overlay-content" id="overlay-content"></div>
 
+      <!-- This is the navigation on the movie trailers page.
+        the arrows allow for switching between movies -->
       <a href="javascript:void(0)" class="arrow left-arrow" id="left-arrow"
         >&#8656;</a
       >
@@ -34,10 +37,11 @@
 
     <div id="mySidebar" class="sidebar">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-      <!--options on Dashboard-->
+      <!--options on (sidebar) hover menu-->
       <a href="#" id="nowPlaying">Now Playing</a>
       <a href="#" id="comingSoon">Coming soon</a>
       <a href="#" id="topRated">Top Rated</a>
+      <!-- Using the html file as a menu option -->
       <a href="./statistics.html">Statistics</a>
     </div>
     <div id="sidebarr">
