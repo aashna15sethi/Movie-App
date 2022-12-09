@@ -1,4 +1,3 @@
-
 //API and API key will be taken from The Movie Database(TMDB)
 const API_KEY = "api_key=1cf50e6248dc270629e802686245c2c8";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -8,7 +7,7 @@ const API_URL = BASE_URL + "/discover/movie?sort_by=popularity.desc&" + API_KEY;
 const IMG_URL = "https://image.tmdb.org/t/p/w500";
 const searchURL = BASE_URL + "/search/movie?" + API_KEY;
 
-// all the genres of movies taken from API responses
+// all the movie genres taken from the API responses
 const genres = [
   {
     id: 28,
@@ -88,6 +87,7 @@ const genres = [
   },
 ];
 
+// getting html elements to add features to them
 const main = document.getElementById("main");
 const form = document.getElementById("formId");
 const search = document.getElementById("search");
@@ -99,6 +99,7 @@ var prevPage = 3;
 var lastUrl = "";
 var totalPages = 100;
 
+// getting html elements to add features to them
 const prev = document.getElementById("prev");
 const next = document.getElementById("next");
 const current = document.getElementById("current");
@@ -106,17 +107,17 @@ const current = document.getElementById("current");
 var selectedGenre = [];
 setGenre();
 
-//function to select particular genre of movies
+// function to select particular genre of movies
 function setGenre() {
   tagsEl.innerHTML = "";
-  
-  //loop through each of the genre
+  // loop through each of the genres
   genres.forEach((genre) => {
     const t = document.createElement("div");
     t.classList.add("tag");
     t.id = genre.id;
     t.innerText = genre.name;
     t.addEventListener("click", () => {
+      // use selectedGenres keep track of the genres that are selected (highlighted)
       if (selectedGenre.length == 0) {
         selectedGenre.push(genre.id);
       } else {
@@ -141,8 +142,6 @@ function setGenre() {
 // highlight the selected genres of movies
 function highlightSelection() {
   const tags = document.querySelectorAll(".tag");
-
-  // to remove the selected genres of movies
   tags.forEach((tag) => {
     tag.classList.remove("highlight");
   });
@@ -158,6 +157,7 @@ function highlightSelection() {
 // clear button to clear all the selected genre of movies
 function clearBtn() {
   let clearBtn = document.getElementById("clear");
+  // highlight the clear button when it appears
   if (clearBtn) {
     clearBtn.classList.add("highlight");
   } else {
@@ -167,7 +167,7 @@ function clearBtn() {
     clear.innerText = "Clear x";
     clear.addEventListener("click", () => {
       selectedGenre = [];
-      //reset selected genre of movies
+      //reset the selectedGenre
       setGenre();
       getMovies(API_URL);
     });
@@ -175,13 +175,13 @@ function clearBtn() {
   }
 }
 
-//call getMovies function
 getMovies(API_URL);
 
+// this function fetches all the movies
+// to be displayed on the main page
 function getMovies(url) {
   lastUrl = url;
-
-  //fetch the data from API
+  // fetch the json data from API
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
@@ -192,13 +192,14 @@ function getMovies(url) {
         nextPage = currentPage + 1;
         prevPage = currentPage - 1;
         totalPages = data.total_pages;
-
         current.innerText = currentPage;
-        /*check if its first page, if its first page then disable(then previous page is not required to be loaded)*/
+        /*check if its first page, if its first page then 
+          disable the previous page button as it is not required to be loaded)*/
         if (currentPage <= 1) {
           prev.classList.add("disabled");
           next.classList.remove("disabled");
-          /*check if its a last page, if its a last page then disable (then next page is not required to be loaded)*/
+          /*check if its a last page, if its a last page then 
+            disable the next page button as it is not required to be loaded)*/
         } else if (currentPage >= totalPages) {
           prev.classList.remove("disabled");
           next.classList.add("disabled");
@@ -207,22 +208,24 @@ function getMovies(url) {
           next.classList.remove("disabled");
         }
 
-        //scroll up if it moves to previous or next page
+        // automatically scroll up if it moves to previous or next page
+        // this will display the results from the beginning on the newly navigated page
         tagsEl.scrollIntoView({ behavior: "smooth" });
-      } else {
+      }
+      // if there are no more movies to be displayed
+      else {
         main.innerHTML = `<h1 class="no-results">No Results Found</h1>`;
       }
     });
 }
 
-//pass extracted data from API to this function
+// pass extracted data from API to this function
+// this function displays all the movies on the main page
 function showMovies(data) {
   main.innerHTML = "";
-
-  //loop over each movie
+  // loop over each movie
   data.forEach((movie) => {
-
-    //Title,poster_path,vote_average,overview,id are taken from response of API
+    // Title,poster_path,vote_average,overview,id are taken from response of API
     const { title, poster_path, vote_average, overview, id } = movie;
     const movieEl = document.createElement("div");
     movieEl.classList.add("movie");
@@ -233,23 +236,21 @@ function showMovies(data) {
                  : "http://via.placeholder.com/1080x1580"
              }" alt="${title}">
 
-            <div class="movie-info">
+             <div class="movie-info">
                 <h3>${title}</h3>
 
-                
                 <span class="${getColor(vote_average)}">${vote_average}</span>
             </div>
 
             <div class="overview">
-
                 <h3>Overview</h3>
                 ${overview}
                 <br/> 
                 <button class="know-more" id="${id}">Know More</button
-            </div>
-        
+            </div>        
         `;
 
+    // adding the fetched movie to the main element (html element)
     main.appendChild(movieEl);
 
     document.getElementById(id).addEventListener("click", () => {
@@ -259,13 +260,13 @@ function showMovies(data) {
   });
 }
 
+// this is the movie trailer page's element
 const overlayContent = document.getElementById("overlay-content");
 
-// Open when someone clicks on the span element
+// opens the movie trailer page
 function openNavMovie(movie) {
   let id = movie.id;
-
-  // fetch movie video details from api
+  // fetch movie trailer details from api
   fetch(BASE_URL + "/movie/" + id + "/videos?" + API_KEY)
     .then((res) => res.json())
     .then((videoData) => {
@@ -276,8 +277,8 @@ function openNavMovie(movie) {
           var embed = [];
           var dots = [];
           videoData.results.forEach((video, idx) => {
-            let { name , key, site } = video;
-            // if its youtube then take embed code from it for perticular movies
+            let { name, key, site } = video;
+            // if it is youtube then take the embeded code from its for corresponing movie
             if (site == "YouTube") {
               embed.push(`
               <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -289,6 +290,7 @@ function openNavMovie(movie) {
             }
           });
 
+          // if there are no trailers available
           var content = `
         <h1 class="no-results">${movie.original_title}</h1>
         <br/>
@@ -309,7 +311,7 @@ function openNavMovie(movie) {
     });
 }
 
-//Close when someone clicks on the "x" symbol inside the overlay
+// Close the trailers page the "x" symbol is clicked on
 function closeNavMovie() {
   document.getElementById("nav").style.width = "0%";
 }
@@ -317,6 +319,7 @@ function closeNavMovie() {
 var activeSlide = 0;
 var totalVideos = 0;
 
+// display the trailers on the page
 function showVideos() {
   let embedClasses = document.querySelectorAll(".embed");
   let dots = document.querySelectorAll(".dot");
@@ -341,21 +344,21 @@ function showVideos() {
   });
 }
 
+// navigating between trailers
 const leftArrow = document.getElementById("left-arrow");
 const rightArrow = document.getElementById("right-arrow");
 
-//left arrow for videos if there are any videos in left
+// left arrow shows the previous video
 leftArrow.addEventListener("click", () => {
   if (activeSlide > 0) {
     activeSlide--;
   } else {
     activeSlide = totalVideos - 1;
   }
-
   showVideos();
 });
 
-//right arrow to show if there is any videos in right
+// right arrow shows the next video
 rightArrow.addEventListener("click", () => {
   if (activeSlide < totalVideos - 1) {
     activeSlide++;
@@ -376,7 +379,7 @@ function getColor(vote) {
   }
 }
 
-//search based on movie name
+// search for movies using their name
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -390,22 +393,21 @@ form.addEventListener("submit", (e) => {
   }
 });
 
-//if previous page is greate than zero then call prevPage function
+// if the user is not on the first page then display the previous page
 prev.addEventListener("click", () => {
   if (prevPage > 0) {
     pageCall(prevPage);
   }
 });
 
-//if there is next page then call nextPage function
+// if the user is not on the last page then display the next page
 next.addEventListener("click", () => {
   if (nextPage <= totalPages) {
     pageCall(nextPage);
- }
+  }
 });
 
 // to move page to next and previous pages
-// 
 function pageCall(page) {
   let urlSplit = lastUrl.split("?");
   let queryParams = urlSplit[1].split("&");
@@ -413,16 +415,17 @@ function pageCall(page) {
   if (key[0] != "page") {
     let url = lastUrl + "&page=" + page;
     getMovies(url);
- } else {
+  } else {
     key[1] = page.toString();
     let a = key.join("=");
-    queryParams[queryParams.length -1] = a;
+    queryParams[queryParams.length - 1] = a;
     let b = queryParams.join("&");
     let url = urlSplit[0] + "?" + b;
     getMovies(url);
   }
 }
 
+// hover menu styling
 function openNav() {
   document.getElementById("mySidebar").style.width = "250px";
   document.getElementById("sidebarr").style.marginLeft = "250px";
@@ -433,26 +436,23 @@ function closeNav() {
   document.getElementById("sidebarr").style.marginLeft = "0";
 }
 
-//movies which are coming soon
-const comingSoon = document.getElementById('comingSoon')
-comingSoon.addEventListener('click', () => {
-  var url = BASE_URL+`/movie/upcoming?${API_KEY}&language=en-US`
-  getMovies(url)
+// movies which are coming soon
+const comingSoon = document.getElementById("comingSoon");
+comingSoon.addEventListener("click", () => {
+  var url = BASE_URL + `/movie/upcoming?${API_KEY}&language=en-US`;
+  getMovies(url);
+});
 
-})
+// movies which are top rated
+const topRated = document.getElementById("topRated");
+topRated.addEventListener("click", () => {
+  var url = BASE_URL + `/movie/top_rated?${API_KEY}&language=en-US`;
+  getMovies(url);
+});
 
-//movies which are top rated
-const topRated = document.getElementById('topRated')
-topRated.addEventListener('click', () => {
-  var url = BASE_URL+`/movie/top_rated?${API_KEY}&language=en-US`
-  getMovies(url)
-})
-
-//movies which are now playing
-const nowPlaying = document.getElementById('nowPlaying')
-nowPlaying.addEventListener('click', () => {
-  var url = BASE_URL+`/movie/now_playing?${API_KEY}&language=en-US`
-  getMovies(url)
-})
-
-
+// movies which are now playing
+const nowPlaying = document.getElementById("nowPlaying");
+nowPlaying.addEventListener("click", () => {
+  var url = BASE_URL + `/movie/now_playing?${API_KEY}&language=en-US`;
+  getMovies(url);
+});
