@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="statistics.css" />
+    <link rel="stylesheet" href="css/statistics.css" />
     <title>Movie Statistics</title>
 
     <!-- chartjs cdn links -->
@@ -32,7 +32,8 @@
   </head>
   <body>
     <header>
-      <h2>Movie Statistics</h2>&nbsp;&nbsp;&nbsp;<span><img src="/analytics.png" alt=""></span>
+      <h2>Movie Statistics</h2>
+      &nbsp;&nbsp;&nbsp;<span><img src="img/analytics.png" alt="" /></span>
     </header>
     <div class="container">
       <div class="row">
@@ -77,15 +78,15 @@
       </div>
       <div id="chartContent">
         <div class="row">
-            <div class="col-sm">
-                <canvas id="barChart"></canvas>
-            </div>
-            <div class="col-sm">
-                <canvas id="pieChart"></canvas>
-            </div>
+          <div class="col-sm">
+            <canvas id="barChart"></canvas>
           </div>
+          <div class="col-sm">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
       </div>
-      
+
       <div class="pagination">
         <div class="page" id="prev">Previous Page</div>
         <div class="current" id="current">1</div>
@@ -93,6 +94,6 @@
       </div>
     </div>
 
-    <script src="statisticsScript.js"></script>
+    <script src="src/statisticsScript.js"></script>
   </body>
 </html>
