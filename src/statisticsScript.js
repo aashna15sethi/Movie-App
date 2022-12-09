@@ -5,12 +5,20 @@ const API_URL = BASE_URL + "/discover/movie?sort_by=popularity.desc&" + API_KEY;
 const IMG_URL = "https://image.tmdb.org/t/p/w500";
 const searchURL = BASE_URL + "/search/movie?" + API_KEY;
 
+// initializing variables
+var currentPage = 1;
+var nextPage = 2;
+var prevPage = 3;
+var lastUrl = "";
+var totalPages = 0;
+
+// extracted elements from html
 const prev = document.getElementById("prev");
 const next = document.getElementById("next");
 const current = document.getElementById("current");
 const search = document.getElementById("search");
 
-//images of some quotes
+// images of some quotes displayed on the main page
 const quotes = [
   "https://www.brainyquote.com/photos_tr/en/t/timburton/179842/timburton1-2x.jpg",
   "https://www.brainyquote.com/photos_tr/en/g/georgelucas/462198/georgelucas1-2x.jpg",
@@ -27,6 +35,7 @@ const quotes = [
 /* Used Jquery for two side sliders
 Here using 2 sliders - YearsRange & RatingsRange
 */
+// this is basically filtering the search
 $(function () {
   $("#years-range").slider({
     range: true,
@@ -60,7 +69,7 @@ $(function () {
   );
 });
 
-/*Brings data of movies with param values selcted using above sliders */
+/* Brings data of movies with url parameter values selected using above filters */
 function getMovies(yearLower, yearUpper, ratingLower, ratingUpper, page) {
   lastUrl = `https://api.themoviedb.org/3/discover/movie?${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&release_date.gte=${yearLower}&release_date.lte=${yearUpper}&vote_average.gte=${ratingLower}&vote_average.lte=${ratingUpper}&with_watch_monetization_types=flatrate`;
   fetch(lastUrl)
@@ -74,13 +83,15 @@ function getMovies(yearLower, yearUpper, ratingLower, ratingUpper, page) {
         nextPage = currentPage + 1;
         prevPage = currentPage - 1;
         totalPages = data.total_pages;
-
         current.innerText = currentPage;
 
+        // if the current page is the first one, there is no option to go to the previous page
         if (currentPage <= 1) {
           prev.classList.add("disabled");
           next.classList.remove("disabled");
-        } else if (currentPage >= totalPages) {
+        }
+        // if the current page is the last one, there is no option to go to the next page
+        else if (currentPage >= totalPages) {
           prev.classList.remove("disabled");
           next.classList.add("disabled");
         } else {
@@ -93,20 +104,21 @@ function getMovies(yearLower, yearUpper, ratingLower, ratingUpper, page) {
     });
 }
 
+// button click functionalities for navigation
 prev.addEventListener("click", () => {
   if (prevPage > 0) {
     pageCall(prevPage);
   }
 });
-
 next.addEventListener("click", () => {
   if (nextPage <= totalPages) {
     pageCall(nextPage);
   }
 });
 
+// specify what to display when the search button is clicked on
 search.addEventListener("click", () => {
-  document.getElementById("quotes").style.display = "none";
+  document.getElementById("quotes").style.display = "none"; 
   document.getElementById("charts").style.display = "none";
   document.getElementById("chartContent").style.display = "block";
   let yearLower = $("#years-range").slider("values", 0);
@@ -117,6 +129,7 @@ search.addEventListener("click", () => {
   getMovies(yearLower, yearUpper, ratingLower, ratingUpper, 1);
 });
 
+// this is the function used for navigating between pages
 function pageCall(page) {
   let yearLower = $("#years-range").slider("values", 0);
   let yearUpper = $("#years-range").slider("values", 1);
@@ -140,7 +153,7 @@ function pageCall(page) {
 var barChart;
 var pieChart;
 
-/*Used to plot barGraph */
+/* Used to plot barGraph */
 function showBarChart(input) {
   if (barChart) {
     barChart.destroy();
@@ -173,7 +186,7 @@ function showBarChart(input) {
   barChart = new Chart(grapharea, config);
 }
 
-/*This function plots PieChart */
+/* This function plots PieChart */
 function showPieChart(input) {
   if (pieChart) {
     pieChart.destroy();
