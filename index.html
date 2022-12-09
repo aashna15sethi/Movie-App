@@ -1,34 +1,35 @@
 <!--Movie Dashboard Application-->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <title>Movie Application</title>
   </head>
   <body>
     <header>
-      <!--search button-->
+      <!--button to search for movies -->
       <form id="formId">
         <input type="text" placeholder="Search" id="search" class="search" />
       </form>
     </header>
     <div id="tags"></div>
     <div id="nav" class="overlay">
-      <!-- Button to close the overlay navigation -->
+      <!-- Button to close the overlay (movie trailer) navigation page -->
       <a href="javascript:void(0)" class="closebtn" onclick="closeNavMovie()"
         >&times;</a
       >
 
-      <!-- Overlay content -->
+      <!-- This is the page to display the movie trailers 
+        for the selected movies -->
       <div class="overlay-content" id="overlay-content"></div>
 
+      <!-- This is the navigation on the movie trailers page.
+        the arrows allow for switching between trailers -->
       <a href="javascript:void(0)" class="arrow left-arrow" id="left-arrow"
         >&#8656;</a
       >
-
       <a href="javascript:void(0)" class="arrow right-arrow" id="right-arrow"
         >&#8658;</a
       >
@@ -36,16 +37,17 @@
 
     <div id="mySidebar" class="sidebar">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-      <!--options on Dashboard-->
+      <!--options on (sidebar) hover menu-->
       <a href="#" id="nowPlaying">Now Playing</a>
       <a href="#" id="comingSoon">Coming soon</a>
       <a href="#" id="topRated">Top Rated</a>
+      <!-- Using the html file as a menu option -->
       <a href="./statistics.html">Statistics</a>
     </div>
     <div id="sidebarr">
       <button class="openbtn" onclick="openNav()">☰</button>
     </div>
-    
+
     <main id="main"></main>
     <div class="pagination">
       <div class="page" id="prev">Previous Page</div>
@@ -53,6 +55,6 @@
       <div class="page" id="next">Next Page</div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="src/script.js"></script>
   </body>
 </html>
